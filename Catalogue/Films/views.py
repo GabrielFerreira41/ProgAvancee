@@ -46,7 +46,7 @@ def addFilm(request):
             return render(request,'detail.html', context)
     # Si méthode GET, on présente le formulaire
     context = {'form': form}
-    return render(request,'contact.html', context)
+    return render(request,'addFilm.html', context)
 
 
 def deleteFilm(request,id):
@@ -55,18 +55,16 @@ def deleteFilm(request,id):
     films = Films.objects.all()
     return render(request,template_name='films.html',context={'films':films})
 
-def updateFilm(request,id):
-    form = FilmForm(instance=Films)
-    if request.method == "PUT":
-        form = FilmForm(request.POST)
-        if form.is_valid():
-            #
-            # 
-            # UPDATE 
-            # 
-            #
-            film = Films.objects.get(id=id)
-            return render(request,template_name='film.html',context={'film':film})
+def updateFilm(request, id):
     film = Films.objects.get(id=id)
-    form_view = {'form': form}
-    return render(request,template_name='film.html',context={'film':film,'update':True,'form':form_view})
+
+    if request.method == "POST":
+        form = FilmForm(request.POST, instance=film)  # Pass the instance to update
+        if form.is_valid():
+            form.save()  # Save the updated data to the database
+            film = Films.objects.get(id=id)
+            return render(request,template_name='film.html',context={'film':film,'update':False})
+    else:
+        form = FilmForm(instance=film)  # Populate the form with existing data
+
+    return render(request,template_name='film.html',context={'film':film,'update':True,'form':form})
