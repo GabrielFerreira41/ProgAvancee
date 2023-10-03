@@ -3,22 +3,38 @@
 {% load static %}
 {% block content %}
 <div class="container">
-    <div class="row align-items-center">
-        <div class="col-md-4">
-            <img src="{% static 'images/'|add:film.imageName %}" class="img-fluid" alt="{{ film.title }}">
-        </div>
-        <div class="col-md-8">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h2 class="card-title">{{ film.title }}</h2>
-                    <p class="card-text">{{ film.created_date }}</p>
-                    <p class="card-text">Réalisateur: {{ film.realisateur_name.prenom }} {{ film.realisateur_name.nom }}</p>
-                    <p class="card-text">{{ film.description }}</p>
-                    <a href="#" class="btn btn-warning">Modifier</a>
-                    <a href="#" class="btn btn-danger">Supprimer</a>
+    {% if update %}
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <h1 class="mb-4">Update Film</h1>
+                    <form class="form" action="{% url 'updateFilm' id=film.id %}" method="PUT">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
+    {% else %}
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <img src="{% static 'images/'|add:film.imageName %}" class="img-fluid" alt="{{ film.title }}">
+            </div>
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title">{{ film.title }}</h2>
+                        <p class="card-text">{{ film.created_date }}</p>
+                        <p class="card-text">Réalisateur: {{ film.realisateur_name.prenom }} {{ film.realisateur_name.nom }}
+                        </p>
+                        <p class="card-text">{{ film.description }}</p>
+                        <a href="{% url 'updateFilm' id=film.id %}" class="btn btn-warning">Modifier</a>
+                        <a href="{% url 'deleteFilm' id=film.id %}" class="btn btn-danger">Supprimer</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

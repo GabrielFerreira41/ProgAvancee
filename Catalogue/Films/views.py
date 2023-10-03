@@ -1,16 +1,19 @@
 from django.shortcuts import render
-
-# Create your views here.
 from django.http import HttpResponse
 from .models import Films
 from django.forms import ModelForm, Textarea
+from django.contrib import messages
+
 
 class FilmForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(FilmForm, self).__init__(*args, **kwargs)
-        self.fields['name'].label = "Nom "
-        self.fields['firstname'].label = "Prenom"
-        self.fields['email'].label = "mél"
+        self.fields['title'].label = "Titre"
+        self.fields['created_date'].label = "Date de création"
+        self.fields['imageName'].label = "Image"
+        self.fields['realisateur_name'].label = "Réalisateur"
+        self.fields['description'].label = "Description"
+
     class Meta:
         model = Films
         fields = ('title', 'description', 'created_date','imageName','realisateur_name')
@@ -26,8 +29,7 @@ def film_view(request,id):
         film = Films.objects.get(id=id)
         return render(request,template_name='film.html',context={'film':film})
 
-
-def contact(request):
+def addFilm(request):
     # on instancie un formulaire
     form = FilmForm()
     # on teste si on est bien en validation de formulaire (POST)
@@ -45,3 +47,26 @@ def contact(request):
     # Si méthode GET, on présente le formulaire
     context = {'form': form}
     return render(request,'contact.html', context)
+
+
+def deleteFilm(request,id):
+    film = Films.objects.get(id=id)
+    film.delete()
+    films = Films.objects.all()
+    return render(request,template_name='films.html',context={'films':films})
+
+def updateFilm(request,id):
+    form = FilmForm(instance=Films)
+    if request.method == "PUT":
+        form = FilmForm(request.POST)
+        if form.is_valid():
+            #
+            # 
+            # UPDATE 
+            # 
+            #
+            film = Films.objects.get(id=id)
+            return render(request,template_name='film.html',context={'film':film})
+    film = Films.objects.get(id=id)
+    form_view = {'form': form}
+    return render(request,template_name='film.html',context={'film':film,'update':True,'form':form_view})
