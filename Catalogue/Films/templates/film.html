@@ -26,9 +26,13 @@
             </div>
         </div>
     {% else %}
-        <div class="row align-items-center">
+        <div class="row align-items-center mt-4">
             <div class="col-md-4">
+<<<<<<< HEAD
                 <img src="{% static film.imageName.url %}" class="img-fluid" alt="{{ film.title }}">
+=======
+                <img src="{% static 'images/'|add:film.imageName %}" class="img-fluid w-75" alt="{{ film.title }}">
+>>>>>>> a3622db (modification des templates)
             </div>
             <div class="col-md-8">
                 <div class="card mb-4">
