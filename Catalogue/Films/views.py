@@ -38,12 +38,11 @@ def addFilm(request):
         form = FilmForm(request.POST)
         # on vérifie la validité du formulaire
         if form.is_valid():
-            new_contact = form.save()
+            newFilm = form.save()
             # on prépare un nouveau message
-            messages.success(request,'Nouveau contact '+new_contact.name+' '+new_contact.email)
+            messages.success(request,'Nouveau film '+newFilm.title)
             #return redirect(reverse('detail', args=[new_contact.pk] ))
-            context = {'pers': new_contact}
-            return render(request,'detail.html', context)
+            return render(request,template_name='film.html',context={'film':newFilm})
     # Si méthode GET, on présente le formulaire
     context = {'form': form}
     return render(request,'addFilm.html', context)

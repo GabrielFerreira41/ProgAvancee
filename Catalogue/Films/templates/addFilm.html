@@ -8,7 +8,7 @@
             <div class="card">
                 <div class="card-body">
                     <h1 class="card-title mb-4">Nouveau Film</h1>
-                    <form class="form" action="add/" method="POST">
+                    <form class="form" action="{% url 'addFilm'%}" method="POST">
                         {% csrf_token %}
                         
                         <div class="form-group mb-4">
