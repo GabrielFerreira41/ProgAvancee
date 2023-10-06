@@ -14,7 +14,7 @@ class Films(models.Model):
     description = models.TextField()
     duree = models.CharField(max_length=250)
     created_date = models.DateField()
-    imageName = models.ImageField(upload_to='/images')  # Utilisez ImageField au lieu de FileField
+    imageName = models.ImageField(upload_to='')  # Utilisez ImageField au lieu de FileField
     realisateur_name = models.ForeignKey(Realisateur, on_delete=models.CASCADE, related_name="films")
 
     def __str__(self):
