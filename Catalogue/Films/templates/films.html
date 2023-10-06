@@ -9,7 +9,7 @@
             <div class="card mb-4 h-100">
                 <a href="{% url 'film_view' id=film.id %}">
                     <div class="aspect-ratio aspect-ratio-1x1">
-                        <img src="{% static 'images/'|add:film.imageName %}" class="card-img-top img-fluid aspect-ratio-child" alt="{{ film.title }}">
+                        <img src="{% static film.imageName.url %}" class="card-img-top img-fluid aspect-ratio-child" alt="{{ film.title }}">
                     </div>
                 </a>
                 <div class="card-body">

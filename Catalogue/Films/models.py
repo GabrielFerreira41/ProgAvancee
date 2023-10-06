@@ -10,13 +10,14 @@ class Realisateur(models.Model):
     description = models.TextField()
 
 class Films(models.Model):
-        title = models.CharField(max_length=250)
-        description = models.TextField()
-        duree = models.CharField(max_length=250)
-        created_date = models.DateField()
-        imageName = models.FileField(upload_to='./static/images/')
-        realisateur_name = models.ForeignKey(Realisateur, on_delete=models.CASCADE, related_name="films")
+    title = models.CharField(max_length=250)
+    description = models.TextField()
+    duree = models.CharField(max_length=250)
+    created_date = models.DateField()
+    imageName = models.ImageField(upload_to='/images')  # Utilisez ImageField au lieu de FileField
+    realisateur_name = models.ForeignKey(Realisateur, on_delete=models.CASCADE, related_name="films")
 
-        def __str__(self):
-            return self.name
+    def __str__(self):
+        return self.title
+
         

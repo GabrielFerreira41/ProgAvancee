@@ -41,8 +41,6 @@ INSTALLED_APPS = [
     'bootstrap5',
     'Films',
     'Accueil',
-    'Jeux',
-    'Series',
 ]
 
 MIDDLEWARE = [
@@ -124,7 +122,7 @@ STATIC_URL = os.path.join(BASE_DIR, "static/")
 STATICFILES_DIRS = [
         os.path.join(BASE_DIR, "static"),
 ]
-MEDIA_URL = '/Catalogue/Films/static/images/'
+MEDIA_URL = ''
 MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
 
 # Default primary key field type
