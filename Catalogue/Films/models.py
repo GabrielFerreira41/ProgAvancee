@@ -1,13 +1,9 @@
 from django.db import models
+from Realisateur.models import Realisateur
 from datetime import datetime, timedelta, date
 from django.utils.html import format_html
 
 
-class Realisateur(models.Model):
-    prenom = models.CharField(max_length=250)
-    nom = models.CharField(max_length=250)
-    age = models.IntegerField()
-    description = models.TextField()
 
 class Films(models.Model):
     title = models.CharField(max_length=250)

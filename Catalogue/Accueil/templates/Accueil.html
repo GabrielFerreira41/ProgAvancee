@@ -35,13 +35,13 @@
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="/Films">Films</a>
+                            <a class="nav-link" href="{% url 'films'%}">Films</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Series</a>
+                            <a class="nav-link" href="{% url 'realisateurs'%}">Realisateurs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Jeux Vidéos</a>
+                            <a class="nav-link" href="#">Acteurs</a>
                         </li>
                     </ul>
                     <form class="d-flex">
@@ -55,7 +55,7 @@
     <main role="main" class="container top-pushed">
         <div class="row justify-content-center">
             <div class="col-md-4 mx-auto">
-                <a href="/Films">
+                <a href="{% url 'films'%}">
                     <div class="card text-center">
                         <div class="card-body">
                             <h5 class="card-title">Films</h5>
@@ -64,10 +64,10 @@
                 </a>
             </div>
             <div class="col-md-4 mx-auto">
-                <a href="/Series">
+                <a href="{% url 'realisateurs'%}">
                     <div class="card text-center">
                         <div class="card-body">
-                            <h5 class="card-title">Séries</h5>
+                            <h5 class="card-title">Realisateur</h5>
                         </div>
                     </div>
                 </a>
@@ -76,7 +76,7 @@
                 <a href="/Jeux">
                     <div class="card text-center">
                         <div class="card-body">
-                            <h5 class="card-title">Jeux</h5>
+                            <h5 class="card-title">Acteurs</h5>
                         </div>
                     </div>
                 </a>

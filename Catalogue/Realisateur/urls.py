@@ -20,11 +20,11 @@ from . import  views
 
 
 urlpatterns = [
-    path('',views.home,name='films'),
-    path('<id>',views.film_view,name='film_view'),
-    path('add/',views.addFilm,name='addFilm'),
-    path('delete/<id>/',views.deleteFilm,name='deleteFilm'),
-    path('update/<id>/',views.updateFilm,name='updateFilm'),
+    path('',views.home,name='realisateurs'),
+    path('<id>',views.realisateur_view,name='Realisateur_view'),
+    path('add/',views.addRealisateur,name='addRealisateur'),
+    path('delete/<id>/',views.deleteRealisateur,name='deleteRealisateur'),
+    path('update/<id>/',views.updateRealisateur,name='updateRealisateur'),
 
 
 ]
