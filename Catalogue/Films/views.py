@@ -5,6 +5,10 @@ from django.forms import ModelForm, Textarea
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 from django import forms
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
+
+
 
 
 
@@ -23,26 +27,27 @@ class FilmForm(ModelForm):
         widgets = {'message': Textarea(attrs={'cols': 60, 'rows': 10}),
         }
 
+
 def addFilm(request):
-    # on instancie un formulaire
     form = FilmForm()
-    # on teste si on est bien en validation de formulaire (POST)
+
     if request.method == "POST":
-        print('okkkkkkkkk')
-        # Si oui on récupère les données postées
-        form = FilmForm(request.POST,request.FILES)
-        print(form)
-        # on vérifie la validité du formulaire
+        form = FilmForm(request.POST, request.FILES)
+
         if form.is_valid():
-            print('FORMmmmmmmmmmmm')
-            newFilm = form.save()
-            # on prépare un nouveau message
-            messages.success(request,'Nouveau film '+newFilm.title)
-            #return redirect(reverse('detail', args=[new_contact.pk] ))
-            return render(request,template_name='film.html',context={'film':newFilm})
-    # Si méthode GET, on présente le formulaire
+            title = form.cleaned_data['title']
+            try:
+                existing_film = Films.objects.get(title=title)
+                messages.error(request, 'Un film avec ce nom existe déjà.')
+                return render(request, 'addFilm.html', {'form': form})
+            except ObjectDoesNotExist:
+                newFilm = form.save()
+                messages.success(request, 'Nouveau film ' + newFilm.title)
+                return render(request, template_name='film.html', context={'film': newFilm})
+
     context = {'form': form}
-    return render(request,'addFilm.html', context)
+    return render(request, 'addFilm.html', context)
+
 
 
 def home(request):
@@ -63,25 +68,34 @@ def deleteFilm(request,id):
 
 
 def updateFilm(request, id):
-    film = Films.objects.get(id=id)
+    try:
+        film = Films.objects.get(id=id)
+        filmTitle = film.title
+    except Films.DoesNotExist:
+        raise Http404("Film non trouvé")
 
     if request.method == "POST":
-        form = FilmForm(request.POST, request.FILES, instance=film)  # Pass the instance to update
+        form = FilmForm(request.POST, request.FILES, instance=film)
         if form.is_valid():
-            # Enregistrez les autres modifications dans la base de données
+            new_title = form.cleaned_data['title']
+            if new_title != filmTitle:
+                try:
+                    existing_film = Films.objects.get(title=new_title)
+                    messages.error(request, 'Un film avec ce nom existe déjà.')
+                    return render(request, 'film.html', {'film': film, 'update': True, 'form': form})
+                except Films.DoesNotExist:
+                    pass
+
             form.save()
 
-            # Vérifiez si une nouvelle image a été fournie
             new_image = request.FILES.get('imageName', None)
             if new_image:
-                # Enregistrez la nouvelle image dans le système de fichiers et en base de données
                 film.imageName = new_image
                 film.save()
-
             film = Films.objects.get(id=id)
             return render(request, template_name='film.html', context={'film': film, 'update': False})
     else:
-        form = FilmForm(instance=film)  # Préremplissez le formulaire avec les données actuelles du film
-
+        form = FilmForm(instance=film)
     return render(request, template_name='film.html', context={'film': film, 'update': True, 'form': form})
+
 

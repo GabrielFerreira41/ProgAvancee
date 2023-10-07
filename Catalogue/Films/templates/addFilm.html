@@ -8,36 +8,47 @@
             <div class="card">
                 <div class="card-body">
                     <h1 class="card-title mb-4">Nouveau Film</h1>
-                    <form class="form" action="{% url 'addFilm'%}" method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        
-                        <div class="form-group mb-4">
-                            <label for="{{ form.title.id_for_label }}">Titre</label>
-                            {{ form.title }}
-                        </div>
-                        
-                        <div class="form-group mb-4">
-                            <label for="{{ form.description.id_for_label }}">Description</label>
-                            {{ form.description }}
-                        </div>
-                        
-                        <div class="form-group mb-4">
-                            <label for="{{ form.created_date.id_for_label }}">Date de création</label>
-                            {{ form.created_date }}
-                        </div>
-                        
-                        <div class="form-group mb-4">
-                            <label for="{{ form.imageName.id_for_label }}">Image</label>
-                            {{ form.imageName }}
-                        </div>
-                        
-                        <div class="form-group mb-4">
-                            <label for="{{ form.realisateur_name.id_for_label }}">Réalisateur</label>
-                            {{ form.realisateur_name }}
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary">Sauvegarder</button>
-                    </form>
+                    <div class="form-error-container">
+                        {% if messages %}
+                            <div class="alert alert-danger">
+                                <ul>
+                                    {% for message in messages %}
+                                        <li>{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                        <form class="form" action="{% url 'addFilm'%}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="form-group mb-4">
+                                <label for="{{ form.title.id_for_label }}">Titre</label>
+                                {{ form.title }}
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <label for="{{ form.description.id_for_label }}">Description</label>
+                                {{ form.description }}
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <label for="{{ form.created_date.id_for_label }}">Date de création</label>
+                                {{ form.created_date }}
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <label for="{{ form.imageName.id_for_label }}">Image</label>
+                                {{ form.imageName }}
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <label for="{{ form.realisateur_name.id_for_label }}">Réalisateur</label>
+                                {{ form.realisateur_name }}
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
