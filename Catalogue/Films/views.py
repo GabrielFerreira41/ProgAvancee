@@ -61,16 +61,27 @@ def deleteFilm(request,id):
     films = Films.objects.all()
     return render(request,template_name='films.html',context={'films':films})
 
+
 def updateFilm(request, id):
     film = Films.objects.get(id=id)
 
     if request.method == "POST":
-        form = FilmForm(request.POST, instance=film)  # Pass the instance to update
+        form = FilmForm(request.POST, request.FILES, instance=film)  # Pass the instance to update
         if form.is_valid():
-            form.save()  # Save the updated data to the database
-            film = Films.objects.get(id=id)
-            return render(request,template_name='film.html',context={'film':film,'update':False})
-    else:
-        form = FilmForm(instance=film)  # Populate the form with existing data
+            # Enregistrez les autres modifications dans la base de données
+            form.save()
 
-    return render(request,template_name='film.html',context={'film':film,'update':True,'form':form})
+            # Vérifiez si une nouvelle image a été fournie
+            new_image = request.FILES.get('imageName', None)
+            if new_image:
+                # Enregistrez la nouvelle image dans le système de fichiers et en base de données
+                film.imageName = new_image
+                film.save()
+
+            film = Films.objects.get(id=id)
+            return render(request, template_name='film.html', context={'film': film, 'update': False})
+    else:
+        form = FilmForm(instance=film)  # Préremplissez le formulaire avec les données actuelles du film
+
+    return render(request, template_name='film.html', context={'film': film, 'update': True, 'form': form})
+
