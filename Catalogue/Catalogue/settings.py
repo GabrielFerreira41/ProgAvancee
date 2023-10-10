@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'bootstrap5',
     'Films',
     'Accueil',
-    'Realisateur'
+    'Realisateur',
+    'Acteurs'
 ]
 
 MIDDLEWARE = [
