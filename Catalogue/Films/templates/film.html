@@ -4,46 +4,69 @@
 {% block content %}
 <div class="container">
     {% if update %}
-        <div class="container mt-5">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <h1 class="mb-4">Update Film</h1>
-                    {% if messages %}
-                            <div class="alert alert-danger">
-                                <ul>
-                                    {% for message in messages %}
-                                        <li>{{ message }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        {% endif %}
-                    <form class="form" action="{% url 'updateFilm' id=film.id %}" method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit" class="btn btn-primary">Sauvegarder</button>
-                    </form>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 class="mb-4">Update Film</h1>
+                {% if messages %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for message in messages %}
+                        <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
                 </div>
-            </div>
-        </div>
-    {% else %}
-        <div class="row align-items-center">
-            <div class="col-md-4">
-                <img src="{% static film.imageName.url %}" class="img-fluid" alt="{{ film.title }}">
-            </div>
-            <div class="col-md-8">
-                <div class="card mb-4">
+                {% endif %}
+                <div class="card">
                     <div class="card-body">
-                        <h2 class="card-title">{{ film.title }}</h2>
-                        <p class="card-text">{{ film.created_date }}</p>
-                        <p class="card-text">Réalisateur: {{ film.realisateur_name.prenom }} {{ film.realisateur_name.nom }}
-                        </p>
-                        <p class="card-text">{{ film.description }}</p>
-                        <a href="{% url 'updateFilm' id=film.id %}" class="btn btn-warning">Modifier</a>
-                        <a href="{% url 'deleteFilm' id=film.id %}" class="btn btn-danger">Supprimer</a>
+                        <form class="form" action="{% url 'updateFilm' id=film.id %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div>{{ form.as_p }}</div>
+                        
+                        <div class="text-right mt-3">
+                            <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                        </div>
+                    </form>
                     </div>
                 </div>
+                
             </div>
         </div>
+    </div>
+    {% else %}
+    <div class="row align-items-center">
+        <div class="col-md-4">
+            <img src="{% static film.imageName.url %}" class="img-fluid" alt="{{ film.title }}">
+        </div>
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">{{ film.title }}</h2>
+                    <p class="card-text">{{ film.created_date }}</p>
+                    <p class="card-text">Réalisateur: {{ film.realisateur_name.prenom }} {{ film.realisateur_name.nom }}
+                    </p>
+                    <p class="card-text">{{ film.description }}</p>
+
+                    <a href="{% url 'updateFilm' id=film.id %}" class="btn btn-warning">Modifier</a>
+                    <a href="{% url 'deleteFilm' id=film.id %}" class="btn btn-danger">Supprimer</a>
+                </div>
+            </div>
+        </div>
+        <h3 class="mt-4">Acteurs :</h3>
+<div class="row">
+    {% for acteur in film.acteurs.all %}
+    <div class="col-md-2 mb-3">
+        <div class="card" style="width: 10rem;">
+            <a href="{% url 'acteurView' id=acteur.id %}">
+                <img src="{% static acteur.imageName.url %}" class="card-img-top" alt="{{ acteur.nom }}" style="height: 10rem;"> <!-- Ajustez la hauteur ici -->
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">{{ acteur.prenom }} {{ acteur.nom }}</h5>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
     {% endif %}
 </div>
 {% endblock %}

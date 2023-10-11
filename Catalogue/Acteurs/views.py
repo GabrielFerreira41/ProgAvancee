@@ -1,4 +1,6 @@
 from django.shortcuts import render
+
+from Films.models import Films
 from .models import Acteur
 from django.contrib import messages
 from django import forms
@@ -34,7 +36,9 @@ def homeActeurs(request):
 def acteurView(request,id):
     id = int(id)
     acteur = Acteur.objects.get(id=id)
-    return render(request,template_name='acteur.html',context={'acteur':acteur})
+    # Utilisez la relation many-to-many pour récupérer les films dans lesquels l'acteur a joué
+    films = Films.objects.filter(acteurs=acteur)
+    return render(request,template_name='acteur.html',context={'acteur':acteur,'films':films})
 
 def deleteActeur(request,id):
     acteur = Acteur.objects.get(id=id)

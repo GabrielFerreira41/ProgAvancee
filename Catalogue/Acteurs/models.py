@@ -8,6 +8,6 @@ class Acteur(models.Model):
     imageName = models.ImageField(upload_to='Acteurs')
 
     def __str__(self):
-        return self.title
+        return self.prenom + ' ' + self.nom
 
         

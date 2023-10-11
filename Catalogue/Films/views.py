@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+
+from Acteurs.models import Acteur
 from .models import Films
 from django.forms import ModelForm, Textarea
 from django.contrib import messages
@@ -12,7 +14,24 @@ from django.http import Http404
 
 
 
-class FilmForm(ModelForm):
+class FilmForm(forms.ModelForm):
+    class Meta:
+        model = Films
+        fields = ('title', 'description', 'created_date', 'imageName', 'realisateur_name', 'acteurs')
+        widgets = {
+            'description': forms.Textarea(attrs={'class': 'form-control', 'cols': 60, 'rows': 10}),
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'created_date': forms.DateInput(attrs={'class': 'form-control'}),
+            'imageName': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'realisateur_name': forms.Select(attrs={'class': 'form-control'}),
+        }
+    
+    acteurs = forms.ModelMultipleChoiceField(
+        queryset=Acteur.objects.all(),
+        widget=forms.CheckboxSelectMultiple(attrs={}),
+    )
+
+
     def __init__(self, *args, **kwargs):
         super(FilmForm, self).__init__(*args, **kwargs)
         self.fields['title'].label = "Titre"
@@ -20,12 +39,8 @@ class FilmForm(ModelForm):
         self.fields['imageName'].label = "Image"
         self.fields['realisateur_name'].label = "Réalisateur"
         self.fields['description'].label = "Description"
+        self.fields['acteurs'].label = "Acteurs"
 
-    class Meta:
-        model = Films
-        fields = ('title', 'description', 'created_date','imageName','realisateur_name')
-        widgets = {'message': Textarea(attrs={'cols': 60, 'rows': 10}),
-        }
 
 
 def addFilm(request):
@@ -58,7 +73,8 @@ def home(request):
 def film_view(request,id):
         id = int(id)
         film = Films.objects.get(id=id)
-        return render(request,template_name='film.html',context={'film':film})
+        acteurs = film.acteurs.all()
+        return render(request,template_name='film.html',context={'film':film,'acteurs': acteurs})
 
 def deleteFilm(request,id):
     film = Films.objects.get(id=id)
