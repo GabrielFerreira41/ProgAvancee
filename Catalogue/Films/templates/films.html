@@ -3,7 +3,7 @@
 {% load static %}
 {% block content %}
 <div class="container">
-    <div class="row">
+    <div class="row mt-4">
         {% for film in films %}
         <div class="col-md-4">
             <div class="card mb-4 h-100">
@@ -18,18 +18,8 @@
             </div>
         </div>
         {% endfor %}
-        <div class="col-md-4">
-            <div class="card mb-4 h-100">
-                <a href="{% url 'addFilm' %}">
-                    <div class="aspect-ratio aspect-ratio-1x1">
-                        <img src="{% static 'images/placeholder-image.jpg' %}" class="card-img-top img-fluid aspect-ratio-child" alt="Ajouter un film">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Ajouter un film</h5>
-                    </div>
-                </a>
-            </div>
-        </div>
     </div>
+        <p class="text-center mt-2"><a class="btn btn-success" href="{% url 'addFilm' %}">Ajouter un film</a></p>
+
 </div>
 {% endblock %}
