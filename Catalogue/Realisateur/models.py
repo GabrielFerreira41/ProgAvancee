@@ -9,4 +9,4 @@ class Realisateur(models.Model):
 
 
     def __str__(self):
-        return self.nom
+        return self.prenom + ' ' + self.nom
