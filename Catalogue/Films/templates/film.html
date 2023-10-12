@@ -8,14 +8,10 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <h1 class="mb-4">Update Film</h1>
-                {% if messages %}
-                <div class="alert alert-danger">
-                    <ul>
-                        {% for message in messages %}
-                        <li>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                {% if errorUpdateMessage %}
+                    <div class="alert alert-danger popup-message" style="position: fixed; height: 10%; width: 20%; text-align: center;">
+                        {{errorUpdateMessage}}
+                    </div>
                 {% endif %}
                 <div class="card">
                     <div class="card-body">
@@ -35,9 +31,19 @@
         </div>
     </div>
     {% else %}
+    {% if successAddMessage %} <!-- ici tu peut voir un block qui vérifie le méssage renvoyé aprés l'ajout d'un film en BD et ça affiche un popup (code js bas de la page) -->
+                    <div class="alert alert-success popup-message" style="position: fixed; height: 10%; width: 20%; text-align: center;">
+                        {{successAddMessage}}
+                    </div>
+    {% endif %}
+    {% if sucessUpdateMessage %} <!-- pareil pour la mise a jour (Je les ai séparé pour la maintenabilité du code) -->
+                    <div class="alert alert-success popup-message" style="position: fixed; height: 10%; width: 20%; text-align: center;">
+                        {{sucessUpdateMessage}}
+                    </div>
+    {% endif %}
     <div class="row align-items-center">
         <div class="col-md-4">
-            <img src="{% static film.imageName.url %}" class="img-fluid" alt="{{ film.title }}">
+        <img src="{% static film.imageName.url %}" class="img-fluid" alt="{{ film.title }}">
         </div>
         <div class="col-md-8">
             <div class="card mb-4">
@@ -60,7 +66,7 @@
                 <div class="card" style="width: 10rem;">
                     <a href="{% url 'acteurView' id=acteur.id %}">
                         <img src="{% static acteur.imageName.url %}" class="card-img-top" alt="{{ acteur.nom }}"
-                            style="height: 10rem;"> <!-- Ajustez la hauteur ici -->
+                            style="height: 10rem;">
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">{{ acteur.prenom }} {{ acteur.nom }}</h5>
@@ -71,4 +77,24 @@
         </div>
         {% endif %}
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var popup = $(".popup-message");
+    
+            if (popup.length > 0) {
+                popup.css("right", "-100%");
+                popup.animate({ right: "10px" }, 500);
+    
+                setTimeout(function () {
+                    popup.animate({ right: "-100%" }, 500, function () {
+                        popup.remove();
+                    });
+                }, 5000); // Le popup disparaîtra après 5 secondes
+            }
+        });
+    </script>
     {% endblock %}
+    
+
+    
