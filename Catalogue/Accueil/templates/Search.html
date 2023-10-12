@@ -1,0 +1,60 @@
+{% extends 'baseSite.html' %}
+{% block title %} Résultats de la recherche {% endblock %}
+{%load static%}
+{% block content %}
+<div class="container">
+    <h1>Résultats de la recherche : "{{ query }}"</h1>
+
+    {% if results.acteurs %}
+    <h3>Acteurs</h3>
+    <ul>
+        {% for acteur in results.acteurs %}
+        <div class="col-md-2 mb-3">
+            <div class="card" style="width: 10rem;">
+                <a href="{% url 'acteurView' id=acteur.id %}">
+                    <img src="{% static acteur.imageName.url %}" class="card-img-top" alt="{{ acteur.nom }}" style="height: 10rem;">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">{{ acteur.prenom }} {{ acteur.nom }}</h5>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if results.films %}
+    <h3>Films</h3>
+    <ul>
+        {% for film in results.films %}
+        <div class="card mb-3" style="width: 10rem;">
+            <a href="{% url 'film_view' id=film.id %}">
+                <img src="{% static film.imageName.url %}" class="card-img-top" alt="{{ film.title }}"
+                    style="height: 10rem;">
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">{{ film.title }}</h5>
+            </div>
+        </div>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if results.realisateurs %}
+    <h3>Réalisateurs</h3>
+    <ul>
+        {% for realisateur in results.realisateurs %}
+        <div class="card mb-3" style="width: 10rem;">
+            <a href="{% url 'Realisateur_view' id=realisateur.id %}">
+                <img src="{% static realisateur.imageName.url %}" class="card-img-top" alt="{{ realisateur.title }}"
+                    style="height: 10rem;">
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">{{ realisateur.prenom }} {{ realisateur.nom }}</h5>
+            </div>
+        </div>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+{% endblock %}
