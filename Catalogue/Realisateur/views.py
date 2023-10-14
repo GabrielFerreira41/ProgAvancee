@@ -1,4 +1,6 @@
 from django.shortcuts import render
+
+from Films.models import Films
 from .models import Realisateur
 from django.contrib import messages
 from django import forms
@@ -8,7 +10,14 @@ from django.http import Http404
 class RealisateurForm(forms.ModelForm):
     class Meta:
         model = Realisateur
-        fields = '__all__'
+        fields = ('prenom', 'nom', 'age', 'description', 'imageName')
+        widgets = {
+            'prenom': forms.TextInput(attrs={'class': 'form-control'}),
+            'nom': forms.TextInput(attrs={'class': 'form-control'}),
+            'age': forms.NumberInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'cols': 60, 'rows': 10}),
+            'imageName': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
 
 def addRealisateur(request):
     form = RealisateurForm()
@@ -34,7 +43,8 @@ def home(request):
 def realisateur_view(request,id):
     id = int(id)
     realisateur = Realisateur.objects.get(id=id)
-    return render(request,template_name='realisateur.html',context={'realisateur':realisateur})
+    films = Films.objects.filter(realisateur_name=realisateur)
+    return render(request,template_name='realisateur.html',context={'realisateur':realisateur,'films':films})
 
 def deleteRealisateur(request,id):
     realisateur = Realisateur.objects.get(id=id)

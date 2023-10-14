@@ -19,17 +19,9 @@
             </div>
         </div>
         {% endfor %}
-        <div class="col-md-4">
-            <div class="card mb-4 h-100">
-                <a href="{% url 'addActeur' %}">
-                    <div class="aspect-ratio aspect-ratio-1x1">
-                        <img src="" class="card-img-top img-fluid aspect-ratio-child" alt="Ajouter un acteur">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Ajouter un acteur</h5>
-                    </div>
-                </a>
-            </div>
+        <div>
+            <p class="text-center mt-2"><a class="btn btn-success" href="{% url 'addActeur' %}">Ajouter un acteur</a></p>
+
         </div>
     </div>
 </div>

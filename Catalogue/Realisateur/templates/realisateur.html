@@ -37,6 +37,18 @@
                     <a href="{% url 'deleteRealisateur' id=realisateur.id %}" class="btn btn-danger">Supprimer</a>
                 </div>
             </div>
+            <h3>Films que {{ realisateur.prenom }} {{ realisateur.nom }} a réalisé :</h3>
+            {% for film in films %}
+            <div class="card mb-3" style="width: 10rem;">
+                <a href="{% url 'film_view' id=film.id %}">
+                    <img src="{% static film.imageName.url %}" class="card-img-top" alt="{{ film.title }}"
+                        style="height: 10rem;">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">{{ film.title }}</h5>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
     {% endif %}
