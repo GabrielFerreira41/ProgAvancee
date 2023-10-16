@@ -10,7 +10,14 @@ from django.http import Http404
 class ActeurForm(forms.ModelForm):
     class Meta:
         model = Acteur
-        fields = '__all__'
+        fields = ('prenom', 'nom', 'age', 'description', 'imageName')
+        widgets = {
+            'prenom': forms.TextInput(attrs={'class': 'form-control'}),
+            'nom': forms.TextInput(attrs={'class': 'form-control'}),
+            'age': forms.NumberInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'cols': 60, 'rows': 10}),
+            'imageName': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
 
 def addActeur(request):
     form = ActeurForm()
