@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import Realisateur
 
-# Register your models here.
+@admin.register(Realisateur)
+class RealisateurAdmin(admin.ModelAdmin):
+    list_display = ('prenom', 'nom', 'age')
+    search_fields = ('prenom', 'nom')
