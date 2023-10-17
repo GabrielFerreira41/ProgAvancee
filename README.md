@@ -9,6 +9,19 @@
 ### Temps
     4 séances
 
+### Fonctionnalités
+
+    -CRUD Film
+    -CRUD Réalisateur
+    -CRUD Acteur
+    -Search Bar film/réalisateur/acteur
+    -pop up suppression/ajout film
+    -vérification doublons film
+    -Login (Create/Delete/Update impossible sans connexion)
+    -test django
+### Log SuperUser
+    - Login : gabriel
+    - Password : root
 ### Sujet
     Ce projet Django consiste à gérer une collection de Films, Séries ou Jeux Vidéos incluant leur année de
     sortie, leur titre, réalisateur (ou Studio) et dʼautres informations de votre choix.
