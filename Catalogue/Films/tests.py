@@ -5,76 +5,79 @@ from django.middleware import csrf
 from Realisateur.models import Realisateur
 from .models import Films
 from .views import FilmForm
+from django.core.files.base import ContentFile
+from django.contrib.staticfiles import finders
+
 
 class FilmsAppTests(TestCase):
       
+    def setUp(self):
+        self.realisateur = Realisateur.objects.create(nom='Nolan', prenom='Christoper', age=54)
+        self.film = Films.objects.create(title='Test Film', description='Test Description', created_date='2023-10-17', imageName='Films/ww_fkP07rU.jpeg', realisateur_name=Realisateur.objects.get(id=1))
+        self.acteur = Acteur.objects.create(nom='Doe', prenom='John', age=40)
+
     def __init__(self, methodName: str = ...) -> None:
         super().__init__(methodName)
 
-    # def test_add_film_view(self):
-    #     response = self.client.get(reverse('addFilm'))
-    #     self.assertEqual(response.status_code, 200)
+    def test_add_film_view(self):
+        response = self.client.get(reverse('addFilm'))
+        self.assertEqual(response.status_code, 200)
 
-    #     # Créez un réalisateur et un acteur
-    #     realisateur = Realisateur.objects.create(nom='Nolan', prenom='Christopher', age=54)
-    #     acteur = Acteur.objects.create(nom='Doe', prenom='John', age=40)
-    #     csrf_token = csrf.get_token(self.client)
 
-    #     # Testez l'ajout d'un nouveau film
-    #     data = {
-    #         'title': 'New Film',
-    #         'description': 'Description of the new film',
-    #         'duree': '120',
-    #         'created_date': '17/10/2020',
-    #         'imageName': 'Films/ww_fkP07rU.jpeg',
-    #         'realisateur_name': realisateur.id,
-    #         'acteurs':[acteur.id],
-    #         'csrfmiddlewaretoken': csrf_token,  # Ajoutez le jeton CSRF
-    #     }
-    #     form = FilmForm(data)
-    #     print(form)
-    #     self.assertTrue(form.is_valid())
+        image_path = finders.find('Films/ww_fkP07rU.jpeg')
+        with open(image_path, 'rb') as f:
+                image_data = f.read()
+        image_name = 'Films/ww_fkP07rU.jpeg'
 
-    #     response = self.client.post(reverse('addFilm'), data)
-    #     self.assertEqual(response.status_code, 200)
+        image_file = ContentFile(image_data, name=image_name)
 
-    #     # Testez l'ajout d'un film avec un titre en double
-    #     data['title'] = 'New Film'
-    #     response = self.client.post(reverse('addFilm'), data)
-    #     self.assertContains(response, 'Un film avec ce nom existe déjà.')
+        data = {
+            'title': 'Nouveau Film',
+            'description': 'Description du nouveau film',
+            'created_date': '2023-10-17',
+            'realisateur_name': self.realisateur.id,
+            'acteurs': [self.acteur.id],
+        }
+
+        form = FilmForm(data=data,files={'imageName': image_file})
+        self.assertTrue(form.is_valid())
         
     def test_home_view(self):
         response = self.client.get(reverse('films'))
         self.assertEqual(response.status_code, 200)
 
     def test_film_view(self):
-        realisateur = Realisateur.objects.create(nom='Nolan', prenom='Christoper',age=54)
-        film = Films.objects.create(title='Test Film', description='Test Description', created_date='2023-10-17',imageName='Films/ww_fkP07rU.jpeg',realisateur_name=Realisateur.objects.get(id=1))
-        response = self.client.get(reverse('film_view', args=[film.id]))
+        response = self.client.get(reverse('film_view', args=[self.film.id]))
         self.assertEqual(response.status_code, 200)
 
     def test_delete_film_view(self):
-        realisateur = Realisateur.objects.create(nom='Nolan', prenom='Christoper',age=54)
-        film = Films.objects.create(title='Test Film', description='Test Description', created_date='2023-10-17',imageName='Films/ww_fkP07rU.jpeg',realisateur_name=Realisateur.objects.get(id=1))
-        response = self.client.get(reverse('deleteFilm', args=[film.id]))
+        response = self.client.get(reverse('deleteFilm', args=[self.film.id]))
         self.assertEqual(response.status_code, 200)
 
-    # def test_update_film_view(self):
-    #     realisateur = Realisateur.objects.create(nom='Nolan', prenom='Christoper',age=54)
-    #     film = Films.objects.create(title='Test Film', description='Test Description', created_date='2023-10-17',imageName='Films/ww_fkP07rU.jpeg',realisateur_name=Realisateur.objects.get(id=1))
-    #     response = self.client.get(reverse('updateFilm', args=[film.id]))
+    def test_update_film_view(self):
+        response = self.client.get(reverse('updateFilm', args=[self.film.id]))
+        self.assertEqual(response.status_code, 200)
+    #     response = self.client.get(reverse('updateFilm', args=[self.film.id]))
     #     self.assertEqual(response.status_code, 200)
 
-    #     # Test updating a film with a duplicate title
+    #     # Simulez la modification des données du film
+    #     image_path = finders.find('Films/ww_fkP07rU.jpeg')
+    #     with open(image_path, 'rb') as f:
+    #         image_data = f.read()
+    #     image_name = 'Films/ww_fkP07rU.jpeg'
+    #     image_file = ContentFile(image_data, name=image_name)
+
     #     data = {
-    #         'title': 'New Film',
-    #         'description': 'Updated Description',
-    #         'created_date': '10/10/2020',
-    #         'imageName': 'Films/ww_fkP07rU.jpeg',
-    #         'realisateur_name': Realisateur.objects.get(id=1),
+    #         'title': 'Nouveau Film',
+    #         'description': 'Description du nouveau film',
+    #         'created_date': '2023-10-17',
+    #         'realisateur_name': self.realisateur.id,
+    #         'acteurs': [self.acteur.id],
     #     }
-    #     form = FilmForm(data)
+        
+    #     form = FilmForm(data=data, files={'imageName': image_file})
     #     self.assertTrue(form.is_valid())
 
-    #     response = self.client.post(reverse('updateFilm', args=[film.id]), data)
+    #     response = self.client.post(reverse('updateFilm', args=[self.film.id]), data)
+
     #     self.assertContains(response, 'Un film avec ce nom existe déjà.')
