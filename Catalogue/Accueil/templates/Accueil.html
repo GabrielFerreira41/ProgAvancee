@@ -1,93 +1,42 @@
-<!doctype html>
-
+{% extends 'baseSite.html' %}
+{% block title %} Films {% endblock %}
 {% load static %}
-{% load bootstrap5 %}
-
-<html lang="fr">
-
-<head>
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <meta charset="utf-8">
-    <title>{% block title %}{% endblock %}</title>
-    {% block metas %}
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {% endblock %}
-    {% block styles %}
-    <link rel="stylesheet" href="{% static 'css/mon.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.rtl.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.rtl.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/variables.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootswatch.css' %}">
-    {% endblock %}
-</head>
-
-<body>
-    <header>
-        <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/">IUTFLIX</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
-                    aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarColor01">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Films">Films</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Series</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Jeux Vidéos</a>
-                        </li>
-                    </ul>
-                    <form class="d-flex">
-                        <input class="form-control me-sm-2" type="search" placeholder="Search">
-                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                    </form>
+{% block content %}
+<main role="main" class="container top-pushed">
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <a class="text-decoration-none" href="{% url 'films'%}">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Films</h5>
+                    </div>
                 </div>
-            </div>
-        </nav>
-    </header>
-    <main role="main" class="container top-pushed">
-        <div class="row justify-content-center">
-            <div class="col-md-4 mx-auto">
-                <a href="/Films">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Films</h5>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4 mx-auto">
-                <a href="/Series">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Séries</h5>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4 mx-auto">
-                <a href="/Jeux">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Jeux</h5>
-                        </div>
-                    </div>
-                </a>
-            </div>
+            </a>
         </div>
-    </main>
-    {% block js %}
-    <script src="{% static 'node_modules/jquery/dist/jquery.min.js' %}"></script>
-    <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'node_modules/popper.js/dist/popper.min.js' %}"></script>
-    {% endblock %}
-</body>
+        <div class="col-md-4">
+            <a class="text-decoration-none" href="{% url 'realisateurs'%}">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Realisateur</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4 mx-auto">
+            <a href="{% url 'acteurs'%}">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Acteurs</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</main>
+{% block js %}
+<script src="{% static 'node_modules/jquery/dist/jquery.min.js' %}"></script>
+<script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'node_modules/popper.js/dist/popper.min.js' %}"></script>
+{% endblock %}
 
-</html>
+{% endblock %}

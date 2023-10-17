@@ -20,7 +20,7 @@ from . import  views
 
 
 urlpatterns = [
-    path('',views.home,name='home'),
+    path('',views.home,name='films'),
     path('<id>',views.film_view,name='film_view'),
     path('add/',views.addFilm,name='addFilm'),
     path('delete/<id>/',views.deleteFilm,name='deleteFilm'),

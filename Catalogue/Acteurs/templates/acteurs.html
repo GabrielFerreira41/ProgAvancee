@@ -1,0 +1,31 @@
+{% extends 'baseSite.html' %}
+{% block title %} Acteurs {% endblock %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        {% for acteur in acteurs %}
+        <div class="col-md-4">
+            <div class="card mb-4 h-100">
+                <a href="{% url 'acteurView' id=acteur.id %}">
+                    <div class="aspect-ratio aspect-ratio-1x1">
+                        <img src="{% static acteur.imageName.url %}" class="card-img-top img-fluid aspect-ratio-child" alt="{{ acteur.name }}">
+                        
+                    </div>
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">{{ acteur.prenom }}{{ acteur.nom }}</h5>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% if user.is_authenticated %}
+
+        <div>
+            <p class="text-center mt-2"><a class="btn btn-success" href="{% url 'addActeur' %}">Ajouter un acteur</a></p>
+
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

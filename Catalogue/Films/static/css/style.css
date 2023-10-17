@@ -1,0 +1,10 @@
+.form-error-container {
+    position: relative;
+}
+
+.alert.alert-danger {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 10px;
+}

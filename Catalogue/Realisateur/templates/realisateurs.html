@@ -1,0 +1,27 @@
+{% extends 'baseSite.html' %}
+{% block title %} Realisateurs {% endblock %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row mt-4">
+        {% for realisateur in realisateurs %}
+        <div class="col-md-4">
+            <div class="card mb-4 h-100">
+                <a href="{% url 'Realisateur_view' id=realisateur.id %}">
+                    <div class="aspect-ratio aspect-ratio-1x1">
+                        <img src="{% static realisateur.imageName.url %}" class="card-img-top img-fluid aspect-ratio-child" alt="{{ realisateur.name }}">
+                        
+                    </div>
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">{{ realisateur.prenom }} {{ realisateur.nom }}</h5>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% if user.is_authenticated %}
+        <p class="text-center mt-2"><a class="btn btn-success" href="{% url 'addRealisateur' %}">Ajouter un Réalisateur</a></p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

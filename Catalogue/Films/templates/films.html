@@ -3,13 +3,18 @@
 {% load static %}
 {% block content %}
 <div class="container">
-    <div class="row">
+    {% if successfulDeleteMessage %}
+    <div class="alert alert-success popup-message" style="position: fixed; height: 10%; width: 20%; text-align: center;">
+        {{successfulDeleteMessage}}
+    </div>
+    {% endif %}
+    <div class="row mt-4">
         {% for film in films %}
         <div class="col-md-4">
             <div class="card mb-4 h-100">
                 <a href="{% url 'film_view' id=film.id %}">
                     <div class="aspect-ratio aspect-ratio-1x1">
-                        <img src="{% static 'images/'|add:film.imageName %}" class="card-img-top img-fluid aspect-ratio-child" alt="{{ film.title }}">
+                        <img src="{% static film.imageName.url %}" class="card-img-top img-fluid aspect-ratio-child" alt="{{ film.title }}">
                     </div>
                 </a>
                 <div class="card-body">
@@ -18,18 +23,27 @@
             </div>
         </div>
         {% endfor %}
-        <div class="col-md-4">
-            <div class="card mb-4 h-100">
-                <a href="{% url 'addFilm' %}">
-                    <div class="aspect-ratio aspect-ratio-1x1">
-                        <img src="{% static 'images/placeholder-image.jpg' %}" class="card-img-top img-fluid aspect-ratio-child" alt="Ajouter un film">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Ajouter un film</h5>
-                    </div>
-                </a>
-            </div>
-        </div>
+    {% if user.is_authenticated %}
     </div>
-</div>
+        <p class="text-center mt-2"><a class="btn btn-success" href="{% url 'addFilm' %}">Ajouter un film</a></p>
+
+    </div>
+    {% endif %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var popup = $(".popup-message");
+
+        if (popup.length > 0) {
+            popup.css("right", "-100%");
+            popup.animate({ right: "10px" }, 500);
+
+            setTimeout(function () {
+                popup.animate({ right: "-100%" }, 500, function () {
+                    popup.remove();
+                });
+            }, 5000); // Le popup disparaîtra après 5 secondes
+        }
+    });
+</script>
 {% endblock %}
