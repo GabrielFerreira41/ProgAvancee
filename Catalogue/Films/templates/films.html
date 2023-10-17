@@ -23,10 +23,12 @@
             </div>
         </div>
         {% endfor %}
+    {% if user.is_authenticated %}
     </div>
         <p class="text-center mt-2"><a class="btn btn-success" href="{% url 'addFilm' %}">Ajouter un film</a></p>
 
-</div>
+    </div>
+    {% endif %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {

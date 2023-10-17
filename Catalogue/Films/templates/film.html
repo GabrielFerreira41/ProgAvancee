@@ -54,8 +54,10 @@
                             class="card-text">{{ film.realisateur_name.prenom }} {{ film.realisateur_name.nom }}
                         </a></p>
                     <p class="card-text">{{ film.description }}</p>
+                    {% if user.is_authenticated %}
                     <a href="{% url 'updateFilm' id=film.id %}" class="btn btn-warning">Modifier</a>
                     <a href="{% url 'deleteFilm' id=film.id %}" class="btn btn-danger">Supprimer</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

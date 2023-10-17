@@ -5,6 +5,7 @@ from .models import Acteur
 from django.contrib import messages
 from django import forms
 from django.http import Http404
+from django.contrib.auth.decorators import login_required
 
 
 class ActeurForm(forms.ModelForm):
@@ -19,6 +20,7 @@ class ActeurForm(forms.ModelForm):
             'imageName': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
+@login_required(login_url='/login')
 def addActeur(request):
     form = ActeurForm()
 
@@ -47,13 +49,14 @@ def acteurView(request,id):
     films = Films.objects.filter(acteurs=acteur)
     return render(request,template_name='acteur.html',context={'acteur':acteur,'films':films})
 
+@login_required(login_url='/login')
 def deleteActeur(request,id):
     acteur = Acteur.objects.get(id=id)
     acteur.delete()
     acteurs = Acteur.objects.all()
     return render(request,template_name='acteurs.html',context={'acteurs':acteurs})
 
-
+@login_required(login_url='/login')
 def updateActeur(request, id):
     try:
         acteur = Acteur.objects.get(id=id)
@@ -69,7 +72,8 @@ def updateActeur(request, id):
                 acteur.imageName = new_image
                 acteur.save()
             acteur = Acteur.objects.get(id=id)
-            return render(request, template_name='acteur.html', context={'acteur': acteur, 'update': False})
+            films = Films.objects.filter(acteurs=acteur)
+            return render(request, template_name='acteur.html', context={'acteur': acteur, 'update': False,'films':films})
     else:
         form = ActeurForm(instance=acteur)
     return render(request, template_name='acteur.html', context={'acteur': acteur, 'update': True, 'form': form})

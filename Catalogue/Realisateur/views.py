@@ -5,6 +5,8 @@ from .models import Realisateur
 from django.contrib import messages
 from django import forms
 from django.http import Http404
+from django.contrib.auth.decorators import login_required
+
 
 
 class RealisateurForm(forms.ModelForm):
@@ -19,6 +21,7 @@ class RealisateurForm(forms.ModelForm):
             'imageName': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
+@login_required(login_url='/login')
 def addRealisateur(request):
     form = RealisateurForm()
 
@@ -46,13 +49,14 @@ def realisateur_view(request,id):
     films = Films.objects.filter(realisateur_name=realisateur)
     return render(request,template_name='realisateur.html',context={'realisateur':realisateur,'films':films})
 
+@login_required(login_url='/login')
 def deleteRealisateur(request,id):
     realisateur = Realisateur.objects.get(id=id)
     realisateur.delete()
     realisateurs = Realisateur.objects.all()
     return render(request,template_name='realisateurs.html',context={'realisateurs':realisateurs})
 
-
+@login_required(login_url='/login')
 def updateRealisateur(request, id):
     try:
         realisateur = Realisateur.objects.get(id=id)
@@ -68,7 +72,9 @@ def updateRealisateur(request, id):
                 realisateur.imageName = new_image
                 realisateur.save()
             realisateur = Realisateur.objects.get(id=id)
-            return render(request, template_name='realisateur.html', context={'realisateur': realisateur, 'update': False})
+            films = Films.objects.filter(realisateur_name=realisateur)
+
+            return render(request, template_name='realisateur.html', context={'realisateur': realisateur, 'update': False,'films':films})
     else:
         form = RealisateurForm(instance=realisateur)
     return render(request, template_name='realisateur.html', context={'realisateur': realisateur, 'update': True, 'form': form})

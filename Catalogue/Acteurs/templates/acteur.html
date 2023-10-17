@@ -30,8 +30,10 @@
                     <h2 class="card-title">{{ acteur.nom }} {{ acteur.prenom }}</h2>
                     <p class="card-text">Age : {{ acteur.age }}</p>
                     <p class="card-text">Description : {{ acteur.description }}</p>
+                    {% if user.is_authenticated %}
                     <a href="{% url 'updateActeur' id=acteur.id %}" class="btn btn-warning">Modifier</a>
                     <a href="{% url 'deleteActeur' id=acteur.id %}" class="btn btn-danger">Supprimer</a>
+                    {% endif %}
                 </div>
             </div>
             <h3>Films dans lesquels {{ acteur.prenom }} {{ acteur.nom }} a joué :</h3>

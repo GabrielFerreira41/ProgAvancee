@@ -4,28 +4,21 @@ from Films.models import Films
 from Realisateur.models import Realisateur
 from Acteurs.models import Acteur
 from django.db.models import Q
+from django import forms
+
+
+
 
 def accueil(request):
     return render(request,template_name='Accueil.html')
 
 def search(request):
     query = request.GET.get('query', '')
-    query = query.split()
     results = []
-    print('COUCOUCCCCC')
-    print(query)
-    print(len(query))
     if query:
-        if len(query)==1:
-        # Recherche les acteurs, films et réalisateurs dont le nom ou le prénom correspondent à la requête
-            acteurs = Acteur.objects.filter(Q(nom__icontains=query[0]) | Q(prenom__icontains=query[0]))
-            films = Films.objects.filter(title__icontains=query[0])
-            realisateurs = Realisateur.objects.filter(Q(nom__icontains=query[0]) | Q(prenom__icontains=query[0]))
-        else:
-            acteurs = Acteur.objects.filter((Q(nom__icontains=query[1]) & Q(prenom__icontains=query[0])) | (Q(nom__icontains=query[0]) & Q(prenom__icontains=query[1])))
-            films = Films.objects.filter(title__icontains=' '.join(query))
-            realisateurs = Realisateur.objects.filter((Q(nom__icontains=query[0]) & Q(prenom__icontains=query[1])) | (Q(nom__icontains=query[0]) & Q(prenom__icontains=query[1])))
-
+        acteurs = Acteur.objects.filter(Q(nom__icontains=query) | Q(prenom__icontains=query))
+        films = Films.objects.filter(title__icontains=query)
+        realisateurs = Realisateur.objects.filter(Q(nom__icontains=query) | Q(prenom__icontains=query))
 
         results = {
             'acteurs': acteurs,
@@ -35,7 +28,7 @@ def search(request):
 
         print(results)
 
-    return render(request, 'Search.html', {'results': results, 'query': ' '.join(query)})
+    return render(request, 'Search.html', {'results': results, 'query': query})
 
 
 

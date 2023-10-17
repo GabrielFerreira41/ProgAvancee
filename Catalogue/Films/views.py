@@ -1,14 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-
 from Acteurs.models import Acteur
 from .models import Films
-from django.forms import ModelForm, Textarea
-from django.contrib import messages
-from django.core.files.storage import FileSystemStorage
 from django import forms
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
+from django.contrib.auth.decorators import login_required
+
 
 
 
@@ -42,7 +38,7 @@ class FilmForm(forms.ModelForm):
         self.fields['acteurs'].label = "Acteurs"
 
 
-
+@login_required(login_url='/login')
 def addFilm(request):
     form = FilmForm()
 
@@ -80,6 +76,7 @@ def film_view(request,id):
         acteurs = film.acteurs.all()
         return render(request,template_name='film.html',context={'film':film,'acteurs': acteurs})
 
+@login_required(login_url='/login')
 def deleteFilm(request,id):
     film = Films.objects.get(id=id)
     film.delete()
@@ -88,7 +85,7 @@ def deleteFilm(request,id):
     print(successfulDeleteMessage)
     return render(request,template_name='films.html',context={'films':films,'successfulDeleteMessage':successfulDeleteMessage})
 
-
+@login_required(login_url='/login')
 def updateFilm(request, id):
     try:
         film = Films.objects.get(id=id)

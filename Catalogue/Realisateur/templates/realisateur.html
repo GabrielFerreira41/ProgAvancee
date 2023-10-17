@@ -33,8 +33,10 @@
                     <p class="card-text">age : {{ realisateur.age }}</p>
                     <p class="card-text">description : {{realisateur.description}}
                     </p>
+                    {% if user.is_authenticated %}
                     <a href="{% url 'updateRealisateur' id=realisateur.id %}" class="btn btn-warning">Modifier</a>
                     <a href="{% url 'deleteRealisateur' id=realisateur.id %}" class="btn btn-danger">Supprimer</a>
+                    {% endif %}
                 </div>
             </div>
             <h3>Films que {{ realisateur.prenom }} {{ realisateur.nom }} a réalisé :</h3>

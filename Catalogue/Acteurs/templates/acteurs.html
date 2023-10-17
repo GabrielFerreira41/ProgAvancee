@@ -19,10 +19,13 @@
             </div>
         </div>
         {% endfor %}
+        {% if user.is_authenticated %}
+
         <div>
             <p class="text-center mt-2"><a class="btn btn-success" href="{% url 'addActeur' %}">Ajouter un acteur</a></p>
 
         </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

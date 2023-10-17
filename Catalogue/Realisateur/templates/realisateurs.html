@@ -19,7 +19,9 @@
             </div>
         </div>
         {% endfor %}
+        {% if user.is_authenticated %}
         <p class="text-center mt-2"><a class="btn btn-success" href="{% url 'addRealisateur' %}">Ajouter un Réalisateur</a></p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
