@@ -4,10 +4,12 @@ from .views import ActeurForm
 from django.core.files.base import ContentFile
 from django.contrib.staticfiles import finders
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 class ActeurFormTest(TestCase):
     def test_valid_form(self):
+        self.superuser = User.objects.create_superuser('gabriel', '', 'root')
         self.client.login(username='gabriel', password='root')
         image_path = finders.find('Acteurs/Chrispratt.jpeg')
         with open(image_path, 'rb') as f:
@@ -29,6 +31,7 @@ class ActeurFormTest(TestCase):
  
 
     def test_invalid_form(self):
+        self.superuser = User.objects.create_superuser('gabriel', '', 'root')
         self.client.login(username='gabriel', password='root')
         data = {
             'prenom': 'John',
@@ -42,6 +45,7 @@ class ActeurFormTest(TestCase):
 
 class ActeurViewTest(TestCase):
     def setUp(self):
+        self.superuser = User.objects.create_superuser('gabriel', '', 'root')
         self.acteur = Acteur.objects.create(prenom='John', nom='Doe', age=30, description='Un acteur talentueux', imageName='Acteurs/Chrispratt_xTsxhlj.jpeg',
 )
 
