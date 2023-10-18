@@ -8,6 +8,7 @@ from django.urls import reverse
 
 class ActeurFormTest(TestCase):
     def test_valid_form(self):
+        self.client.login(username='gabriel', password='root')
         image_path = finders.find('Acteurs/Chrispratt.jpeg')
         with open(image_path, 'rb') as f:
                 image_data = f.read()
@@ -28,6 +29,7 @@ class ActeurFormTest(TestCase):
  
 
     def test_invalid_form(self):
+        self.client.login(username='gabriel', password='root')
         data = {
             'prenom': 'John',
             'nom': 'Doe',
@@ -44,16 +46,19 @@ class ActeurViewTest(TestCase):
 )
 
     def test_homeActeurs_view(self):
+        self.client.login(username='gabriel', password='root')
         response = self.client.get(reverse('acteurs'))
         self.assertEqual(response.status_code, 200)
         self.assertQuerysetEqual(response.context['acteurs'], [self.acteur])
 
     def test_acteurView_view(self):
+        self.client.login(username='gabriel', password='root')
         response = self.client.get(reverse('acteurView', args=[self.acteur.id]))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['acteur'], self.acteur)
 
     def test_add_acteur(self):
+        self.client.login(username='gabriel', password='root')
         response = self.client.get(reverse('addActeur'))
         self.assertEqual(response.status_code, 200)
 
@@ -80,10 +85,12 @@ class ActeurViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_updateActeur_view(self):
+        self.client.login(username='gabriel', password='root')
         response = self.client.get(reverse('updateActeur', args=[self.acteur.id]))
         self.assertEqual(response.status_code, 200)
 
     def test_deleteActeur_view(self):
+        self.client.login(username='gabriel', password='root')
         response = self.client.get(reverse('deleteActeur', args=[self.acteur.id]))
         self.assertEqual(response.status_code, 200)
 
