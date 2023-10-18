@@ -4,10 +4,13 @@ from .views import ActeurForm
 from django.core.files.base import ContentFile
 from django.contrib.staticfiles import finders
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 class ActeurFormTest(TestCase):
     def test_valid_form(self):
+        self.superuser = User.objects.create_superuser('gabriel', '', 'root')
+        self.client.login(username='gabriel', password='root')
         image_path = finders.find('Acteurs/Chrispratt.jpeg')
         with open(image_path, 'rb') as f:
                 image_data = f.read()
@@ -28,6 +31,8 @@ class ActeurFormTest(TestCase):
  
 
     def test_invalid_form(self):
+        self.superuser = User.objects.create_superuser('gabriel', '', 'root')
+        self.client.login(username='gabriel', password='root')
         data = {
             'prenom': 'John',
             'nom': 'Doe',
@@ -40,20 +45,24 @@ class ActeurFormTest(TestCase):
 
 class ActeurViewTest(TestCase):
     def setUp(self):
+        self.superuser = User.objects.create_superuser('gabriel', '', 'root')
         self.acteur = Acteur.objects.create(prenom='John', nom='Doe', age=30, description='Un acteur talentueux', imageName='Acteurs/Chrispratt_xTsxhlj.jpeg',
 )
 
     def test_homeActeurs_view(self):
+        self.client.login(username='gabriel', password='root')
         response = self.client.get(reverse('acteurs'))
         self.assertEqual(response.status_code, 200)
         self.assertQuerysetEqual(response.context['acteurs'], [self.acteur])
 
     def test_acteurView_view(self):
+        self.client.login(username='gabriel', password='root')
         response = self.client.get(reverse('acteurView', args=[self.acteur.id]))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['acteur'], self.acteur)
 
     def test_add_acteur(self):
+        self.client.login(username='gabriel', password='root')
         response = self.client.get(reverse('addActeur'))
         self.assertEqual(response.status_code, 200)
 
@@ -80,10 +89,12 @@ class ActeurViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_updateActeur_view(self):
+        self.client.login(username='gabriel', password='root')
         response = self.client.get(reverse('updateActeur', args=[self.acteur.id]))
         self.assertEqual(response.status_code, 200)
 
     def test_deleteActeur_view(self):
+        self.client.login(username='gabriel', password='root')
         response = self.client.get(reverse('deleteActeur', args=[self.acteur.id]))
         self.assertEqual(response.status_code, 200)
 

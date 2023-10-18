@@ -7,11 +7,13 @@ from .models import Films
 from .views import FilmForm
 from django.core.files.base import ContentFile
 from django.contrib.staticfiles import finders
-
+from django.contrib.auth.models import User
 
 class FilmsAppTests(TestCase):
       
     def setUp(self):
+        self.superuser = User.objects.create_superuser('gabriel', '', 'root')
+        self.client.login(username='gabriel', password='root')
         self.realisateur = Realisateur.objects.create(nom='Nolan', prenom='Christoper', age=54)
         self.film = Films.objects.create(title='Test Film', description='Test Description', created_date='2023-10-17', imageName='Films/ww_fkP07rU.jpeg', realisateur_name=Realisateur.objects.get(id=1))
         self.acteur = Acteur.objects.create(nom='Doe', prenom='John', age=40)

@@ -14,11 +14,17 @@ def accueil(request):
 
 def search(request):
     query = request.GET.get('query', '')
+    query = query.split()
     results = []
     if query:
-        acteurs = Acteur.objects.filter(Q(nom__icontains=query) | Q(prenom__icontains=query))
-        films = Films.objects.filter(title__icontains=query)
-        realisateurs = Realisateur.objects.filter(Q(nom__icontains=query) | Q(prenom__icontains=query))
+        if len(query)==1:
+            acteurs = Acteur.objects.filter(Q(nom__icontains=query[0]) | Q(prenom__icontains=query[0]))
+            films = Films.objects.filter(title__icontains=query[0])
+            realisateurs = Realisateur.objects.filter(Q(nom__icontains=query[0]) | Q(prenom__icontains=query[0]))
+        else:
+            acteurs = Acteur.objects.filter((Q(nom__icontains=query[1]) & Q(prenom__icontains=query[0])) | (Q(nom__icontains=query[0]) & Q(prenom__icontains=query[1])))
+            films = Films.objects.filter(title__icontains=' '.join(query))
+            realisateurs = Realisateur.objects.filter((Q(nom__icontains=query[0]) & Q(prenom__icontains=query[1])) | (Q(nom__icontains=query[0]) & Q(prenom__icontains=query[1])))
 
         results = {
             'acteurs': acteurs,
@@ -28,7 +34,7 @@ def search(request):
 
         print(results)
 
-    return render(request, 'Search.html', {'results': results, 'query': query})
+    return render(request, 'Search.html', {'results': results, 'query': ' '.join(query)})
 
 
 
